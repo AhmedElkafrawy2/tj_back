@@ -1,0 +1,51 @@
+.site-footer {
+  ul {
+    &.social {
+      a {
+        height: 2.5rem;
+        width: 2.5rem;
+        line-height: 2.5rem;
+      }
+    }
+    &.hot-links {
+      columns: 2;
+      i[class*="fa"] {
+        font-size: 0.75rem;
+      }
+    }
+  }
+  .subscribe-form {
+    .submit-button {
+      border-radius: 2.5rem 0 0 2.5rem;
+    }
+    .submit-field {
+      border-radius: 0 2.5rem 2.5rem 0;
+    }
+  }
+  .bottom-bar {
+    ul {
+      &.nav {
+        li:nth-child(2) {
+          a {
+            &:before,
+            &:after {
+              background-color: $light;
+              content: "";
+              position: absolute;
+              width: 1px;
+              height: 25%;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+            &:before {
+              right: 0;
+            }
+            &:after {
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+body {
+  direction: $dir;
+  font-family: $font__cairo;
+  text-align: $global-align;
+}
+.no-decoration {
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}
+.line-height-lg {
+  line-height: 30px;
+}
+.font-tahoma {
+  font-family: $font__tahoma;
+}
+.font-cairo {
+  font-family: $font__cairo;
+}
+.font-cairo-bold {
+  font-family: $font__cairo-bold;
+}
+.font-cairo-semi-bold {
+  font-family: $font__cairo-semiBold;
+}
+.font-baloo {
+  font-family: $font__baloo;
+}
+::placeholder {
+  color: $light !important;
+}
+.radius {
+    border-radius: 2.5rem !important;
+}

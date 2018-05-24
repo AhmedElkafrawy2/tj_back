@@ -1,0 +1,36 @@
+@import "../../bootstrap/mixins/breakpoints";
+.site-header {
+  .modal-backdrop {
+    background-color: $trans !important;
+    opacity: 1 !important;
+  }
+  .dropdown {
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+      .dropdown-item {
+        &:active {
+          background-color: $pink;
+        }
+      }
+    }
+    .dropdown-toggle {
+      &:after {
+        margin-left: auto;
+        margin-right: 0.25rem;
+      }
+    }
+  }
+  .search-form {
+    display: none;
+    position: absolute;
+    left: 1rem;
+    top: 100%;
+    z-index: 999;
+    @include media-breakpoint-down(sm) {
+      top: auto;
+      left: auto;
+      position: relative;
+    }
+  }
+}

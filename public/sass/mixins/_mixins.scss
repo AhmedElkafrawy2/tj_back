@@ -1,0 +1,45 @@
+@mixin background($color: null,$url: null,$repeat: null,$position: null,$attach: null,$size: null) {
+    background-color: $color;
+    background-image: url($url);
+    background-repeat: $repeat;
+    -webkit-background-size: $size;
+    background-size: $size;
+    background-position: $position;
+}
+@mixin background-gradient($light: null, $dark: null, $min: 0%, $max: 100%) {
+    background: $dark; /* Old browsers */
+    background: -moz-linear-gradient(top, $light $min, $dark $max); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, $light $min,$dark $max); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, $light $min,$dark $max); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{$light}', endColorstr='#{$dark}',GradientType=0 ); /* IE6-9 */
+}
+@mixin btn-bg($bg, $color: null) {
+    background-color: $bg;
+    color: $color;
+    transition: all 0.2s ease-in-out;
+    &:hover,
+    &:focus {
+        background-color: darken($bg, 3%);
+        color: $color;
+    }
+}
+
+@mixin btn-3d($bg, $box: null, $box-after: null, $x: null, $y: null) {
+    background-color: $bg;
+    box-shadow: $box;
+    transition: all 0.1s ease-in-out;
+    &:active {
+        transform: translate($x, $y);
+        box-shadow: $box-after;
+    }
+}
+
+@mixin link-color($color, $hover: $color) {
+    color: $color;
+    transition: color 0.2s ease-in-out;
+    &:hover,
+    &:focus {
+        color: rgba($hover, 0.7);
+    }
+}
+

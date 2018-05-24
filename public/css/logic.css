@@ -1,0 +1,68 @@
+/* start register user section */
+.register-errors{
+	display:none;
+}
+/* end register user section */
+
+/* start login user section */
+.login-errors{
+	display:none;
+}
+/* end login user section */
+
+/* start top header section */
+.menu-name{
+	color:#fff;
+}
+.menu-name:hover{
+	color:#fff;
+}
+/* end top header section */
+
+/* start add exp section */
+.add-exp-images{
+	
+}
+.add-exp-images div{
+	
+}
+.add-exp-images div img{
+	width:100px;
+	height:100px;
+	margin:4px;
+	border: 2px solid #bababa;
+	margin-top:-2px;
+}
+.add-exp-images div i{
+	display:block;
+	color: #c6c6c6;
+	cursor:pointer;
+	visibility: hidden;
+}
+.add-exp-images div i:hover{
+	color: #6e6e6e;
+}
+
+.add-exp-errors{
+	display:none;
+}
+/* end add exp section */
+
+/* start modal section */
+#notify-modal-section{
+	background: #d4edda; 
+	color:#155724;
+}
+
+#info-modal-section{
+	background: #cce5ff; 
+	color:#004085;
+}
+.info-modal-footer{
+	text-align:center;
+	padding-bottom:10px;
+}
+.info-modal-footer button{
+	width:90px;
+}
+/* end modal section */

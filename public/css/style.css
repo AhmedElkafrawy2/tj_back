@@ -1,0 +1,199 @@
+/* line 1, ../sass/site/primary/_globals.scss */
+body {
+  direction: rtl;
+  font-family: "Cairo", sans-serif;
+  text-align: right;
+}
+
+/* line 7, ../sass/site/primary/_globals.scss */
+.no-decoration:hover, .no-decoration:focus {
+  text-decoration: none;
+}
+
+/* line 12, ../sass/site/primary/_globals.scss */
+.line-height-lg {
+  line-height: 30px;
+}
+
+/* line 15, ../sass/site/primary/_globals.scss */
+.font-tahoma {
+  font-family: "tahoma";
+}
+
+/* line 18, ../sass/site/primary/_globals.scss */
+.font-cairo {
+  font-family: "Cairo", sans-serif;
+}
+
+/* line 21, ../sass/site/primary/_globals.scss */
+.font-cairo-bold {
+  font-family: "Cairo-Bold", sans-serif;
+}
+
+/* line 24, ../sass/site/primary/_globals.scss */
+.font-cairo-semi-bold {
+  font-family: "Cairo-SemiBold", sans-serif;
+}
+
+/* line 27, ../sass/site/primary/_globals.scss */
+.font-baloo {
+  font-family: "Baloo Bhaijaan", cursive;
+}
+
+/* line 30, ../sass/site/primary/_globals.scss */
+::-webkit-input-placeholder {
+  color: #9e9e9e !important;
+}
+:-ms-input-placeholder {
+  color: #9e9e9e !important;
+}
+::-ms-input-placeholder {
+  color: #9e9e9e !important;
+}
+::placeholder {
+  color: #9e9e9e !important;
+}
+
+/* line 33, ../sass/site/primary/_globals.scss */
+.radius {
+  border-radius: 2.5rem !important;
+}
+
+/* line 3, ../sass/site/primary/_header.scss */
+.site-header .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  opacity: 1 !important;
+}
+/* line 8, ../sass/site/primary/_header.scss */
+.site-header .dropdown .dropdown-menu {
+  left: auto;
+  right: 0;
+}
+/* line 12, ../sass/site/primary/_header.scss */
+.site-header .dropdown .dropdown-menu .dropdown-item:active {
+  background-color: #ff8580;
+}
+/* line 18, ../sass/site/primary/_header.scss */
+.site-header .dropdown .dropdown-toggle:after {
+  margin-left: auto;
+  margin-right: 0.25rem;
+}
+/* line 24, ../sass/site/primary/_header.scss */
+.site-header .search-form {
+  display: none;
+  position: absolute;
+  left: 1rem;
+  top: 100%;
+  z-index: 999;
+}
+@media (max-width: 767.98px) {
+  /* line 24, ../sass/site/primary/_header.scss */
+  .site-header .search-form {
+    top: auto;
+    left: auto;
+    position: relative;
+  }
+}
+
+/* line 4, ../sass/site/primary/_footer.scss */
+.site-footer ul.social a {
+  height: 2.5rem;
+  width: 2.5rem;
+  line-height: 2.5rem;
+}
+/* line 10, ../sass/site/primary/_footer.scss */
+.site-footer ul.hot-links {
+  -webkit-columns: 2;
+          columns: 2;
+}
+/* line 12, ../sass/site/primary/_footer.scss */
+.site-footer ul.hot-links i[class*="fa"] {
+  font-size: 0.75rem;
+}
+/* line 18, ../sass/site/primary/_footer.scss */
+.site-footer .subscribe-form .submit-button {
+  border-radius: 2.5rem 0 0 2.5rem;
+}
+/* line 21, ../sass/site/primary/_footer.scss */
+.site-footer .subscribe-form .submit-field {
+  border-radius: 0 2.5rem 2.5rem 0;
+}
+/* line 30, ../sass/site/primary/_footer.scss */
+.site-footer .bottom-bar ul.nav li:nth-child(2) a:before, .site-footer .bottom-bar ul.nav li:nth-child(2) a:after {
+  background-color: #9e9e9e;
+  content: "";
+  position: absolute;
+  width: 1px;
+  height: 25%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+/* line 40, ../sass/site/primary/_footer.scss */
+.site-footer .bottom-bar ul.nav li:nth-child(2) a:before {
+  right: 0;
+}
+/* line 43, ../sass/site/primary/_footer.scss */
+.site-footer .bottom-bar ul.nav li:nth-child(2) a:after {
+  left: 0;
+}
+
+/* line 4, ../sass/site/secondary/_page.scss */
+.page-template.home .carousel .carousel-caption {
+  bottom: auto;
+  left: auto;
+  right: auto;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+/* line 11, ../sass/site/secondary/_page.scss */
+.page-template.home .carousel .carousel-control-prev,
+.page-template.home .carousel .carousel-control-next {
+  background-color: #16001e;
+  bottom: auto;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  height: 2.5rem;
+  width: 2.5rem;
+  line-height: 2.5rem;
+}
+/* line 21, ../sass/site/secondary/_page.scss */
+.page-template.home .carousel .carousel-control-prev {
+  left: 4rem;
+}
+@media (max-width: 767.98px) {
+  /* line 21, ../sass/site/secondary/_page.scss */
+  .page-template.home .carousel .carousel-control-prev {
+    left: 1rem;
+  }
+}
+/* line 27, ../sass/site/secondary/_page.scss */
+.page-template.home .carousel .carousel-control-next {
+  right: 4rem;
+}
+@media (max-width: 767.98px) {
+  /* line 27, ../sass/site/secondary/_page.scss */
+  .page-template.home .carousel .carousel-control-next {
+    right: 1rem;
+  }
+}
+/* line 38, ../sass/site/secondary/_page.scss */
+.page-template .recent-questions .accordion [data-toggle="collapse"] .fa {
+  background-color: #ff8580;
+}
+/* line 40, ../sass/site/secondary/_page.scss */
+.page-template .recent-questions .accordion [data-toggle="collapse"] .fa:before {
+  content: "\f068";
+}
+/* line 45, ../sass/site/secondary/_page.scss */
+.page-template .recent-questions .accordion [data-toggle="collapse"].collapsed .fa {
+  background-color: #e1e1e1;
+}
+/* line 47, ../sass/site/secondary/_page.scss */
+.page-template .recent-questions .accordion [data-toggle="collapse"].collapsed .fa:before {
+  content: "\f067";
+}
+
+/*# sourceMappingURL=style.css.map */
