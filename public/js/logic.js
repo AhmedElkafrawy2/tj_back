@@ -221,7 +221,6 @@ $(document).ready(function(){
 		
 		var number = "";
         $.each(loadedimages , function(k , v){
-    		console.log("k " , k , " v " , v);
     		data.append(k , v);
             number = k;
         });
@@ -338,6 +337,45 @@ $(document).ready(function(){
 			location.reload();
 		}, data.time);
 	}
+	
+	$(".add-reply-btn").on("click" , function(){	
+		var comment_id = $(this).attr("comment_id");
+		$(".submit-reply-btn").attr("comment_id" , comment_id);
+		$("#comment-reply").modal();
+	
+	});
+	
+	$(".submit-reply-btn").on("click" , function(){
+		var comment = $("#comment-reply-input").val();
+		var comment_id = $(this).attr("comment_id");
+		var url     = $(".comment-reply-form").attr("url");
+		var type = "POST";
+		var _token = $(".comment-reply-form").find("input[ name = '_token']").val();
+		if(!comment){
+			$(".comment-reply-errors").css("display" , "block");
+			$(".comment-reply-errors ul").html("<li>برجاء اضافة الرد</li>");
+		}else{
+			$(".comment-reply-errors").css("display" , "none");
+			$(".comment-reply-errors ul").html("");
+			
+			var data = new FormData();
+			data.append("comment" ,  comment);
+			data.append("parent_id" , comment_id);
+			data.append("_token" , _token);
+			request(url,type,data,function(data){
+				if(data.status == true){
+					$("#comment-reply").css('z-index' , "9");
+					$(".notify-modal-content").html("<i class='fa fa-check' aria-hidden='true'></i><br />" + data.msg);
+					$('#notify-form').modal();
+					setTimeout(function(){
+						location.reload();
+					}, 3000);
+				}
+			},function(error){
+				alert("حدث خطأ برجاء المحاولة لاحقا");
+			});
+		}
+	})
 });
 
 

@@ -14,16 +14,33 @@
 Route::get('/', 'Site\HomeController@index')->name("route.index");
 Route::post("/request/getcities","Site\HomeController@requestCities");
 
-Route::post("/user/register" , "Site\AuthController@register");
-Route::post("/user/login" , "Site\AuthController@login");
-Route::get("/user/logout" , "Site\AuthController@Logout");
+Route::prefix('user')->group(function () {
+    Route::post("/register" , "Site\AuthController@register");
+    Route::post("/login" , "Site\AuthController@login");
+    Route::get("/logout" , "Site\AuthController@Logout");
+});
 
+Route::prefix('experiment')->group(function () {
+    Route::get("/all" ,  "Site\ExperimentController@get_all_experiments");
+    Route::get("/{id}" , "Site\ExperimentController@get_certain_experiment");
+    Route::prefix('add')->group(function () {
+        Route::get("/" ,  "Site\ExperimentController@getAddExperiment");
+        Route::post("/" , "Site\ExperimentController@postAddExperiment");
+        Route::post("/reply" , "Site\ExperimentController@postAddReply");
+    });
+});
+
+Route::prefix('comment')->group(function () {
+    Route::post("/add" ,  "Site\CommentController@add_comment");
+    Route::post("/reply" ,  "Site\CommentController@add_reply");
+});
 Route::middleware(['auth'])->group(function () {
     Route::get("/add/experiment" , "Site\UserController@getExperiment");
     Route::post("/add/experiment" , "Site\UserController@postExperiment");
     
     Route::get("/add/question" , "Site\UserController@getQuestion");
     Route::post("/add/question" , "Site\UserController@postQuestion"); 
+    
 });
 
 

@@ -1,6 +1,6 @@
 @extends('site.layouts.master')
 @section('title')
-- الرئيسية
+- التجارب
 @endsection
 @section('content')
 <main class="site-content pb-5">
@@ -65,7 +65,7 @@
     <section class="section recent-experience py-5 mt-5">
         <header class="section-header">
             <h4 class="section-title font-cairo-bold text-center">
-                أحدث التجارب
+                قائمة التجارب
                 <img src="{{ asset('img/separator.png') }}"
                      width="281"
                      height="17"
@@ -114,46 +114,5 @@
             </div>
         </div><!-- container -->
     </section><!-- section recent-experience -->
-
-    <section class="section recent-questions py-5 mt-5">
-        <header class="section-header mb-5">
-            <h4 class="section-title font-cairo-bold text-center">
-                أحدث الأسئلة
-                <img src="{{ asset('img/separator.png') }}"
-                     width="281"
-                     height="17"
-                     alt="Separator"
-                     class="mt-2 d-block mx-auto img-fluid">
-            </h4><!-- section-title -->
-        </header><!-- section-header -->
-        <div class="container">
-            <div class="accordion" id="accordion">
-				
-				@foreach( $questions as $question )
-                <div class="card border-0 mb-3">
-                    <div class="card-header border-0 p-0" id="accordion-header-1">
-                        <h5 class="mb-0 text-truncate">
-                            <a class="btn btn-link font-cairo-bold collapsed"
-                                data-toggle="collapse"
-                                data-target="#accordion-collaps-1"
-                                aria-expanded="true" aria-controls="accordion-collaps-1">
-                                <i class="fa p-2 text-white rounded ml-2"></i>{{ $question->title }}
-                            </a>
-                        </h5>
-                    </div>
-
-                    <div id="accordion-collaps-1" class="collapse" aria-labelledby="accordion-header-1" data-parent="#accordion">
-                        <a href=""><div class="card-body font-cairo-semi-bold text-light py-0 px-5">{{ $question->description }}</div></a>
-                    </div>
-                </div><!-- card -->
-				@endforeach
-            </div><!-- accordion -->
-
-            <div class="text-center mt-5">
-                <a href="question.html" class="more-link btn btn-outline-pink radius line-height-lg px-5 font-cairo-bold align-self-end">شاهد المزيد</a>
-            </div>
-        </div><!-- container -->
-    </section><!-- section recent-questions -->
-
 </main><!-- site-content -->
 @endsection

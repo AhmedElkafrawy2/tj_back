@@ -65,4 +65,17 @@
 .info-modal-footer button{
 	width:90px;
 }
+
 /* end modal section */
+
+/* start update expriment section */
+.add-reply-error-content{
+	margin-top: 10px;
+}
+/* End update expriment section */
+
+/* start add reply section */
+.comment-reply-errors{
+	display:none;
+}
+/* end add reply section */

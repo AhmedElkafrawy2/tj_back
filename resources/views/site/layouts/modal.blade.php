@@ -57,6 +57,45 @@
         </div>
     </div>
 </div><!-- modal -->
+
+
+<!--  add comment reply modal -->
+<div class="modal fade"
+     id="comment-reply"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="comment-reply"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header border-bottom-0 bg-pink text-white px-4">
+                <h5 class="modal-title" id="login-form-title">اضافة رد</h5>
+            </div>
+            <div class="modal-body px-4">
+                <form url= "{{ url('/comment/reply') }}" method="POST" class="pt-3 comment-reply-form">
+                    {{ csrf_field() }}
+                    <div class="alert alert-danger comment-reply-errors">
+                    	<ul></ul>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel"
+                               class="form-control h-auto rounded-0 border-lighten"
+                               id="comment-reply-input"
+                               name="comment-reply-input"
+                               placeholder="الرد">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer flex-column border-top-0 px-4">
+                <button type="submit"
+                        class="submit-reply-btn btn btn-outline-pink radius btn-block line-height-lg"
+                        		>اضافة</button>
+            </div>
+        </div>
+    </div>
+</div><!-- modal -->
+
+
 <div class="modal fade"
      id="recover-form"
      tabindex="-1"
