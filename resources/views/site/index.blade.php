@@ -143,14 +143,14 @@
                     </div>
 
                     <div id="accordion-collaps-1" class="collapse" aria-labelledby="accordion-header-1" data-parent="#accordion">
-                        <a href=""><div class="card-body font-cairo-semi-bold text-light py-0 px-5">{{ $question->description }}</div></a>
+                        <a href="{{ url('/question/'. $question->id) }}"><div class="card-body font-cairo-semi-bold text-light py-0 px-5">{{ $question->description }}</div></a>
                     </div>
                 </div><!-- card -->
 				@endforeach
             </div><!-- accordion -->
 
             <div class="text-center mt-5">
-                <a href="question.html" class="more-link btn btn-outline-pink radius line-height-lg px-5 font-cairo-bold align-self-end">شاهد المزيد</a>
+                <a href="{{ url('/question/all') }}" class="more-link btn btn-outline-pink radius line-height-lg px-5 font-cairo-bold align-self-end">شاهد المزيد</a>
             </div>
         </div><!-- container -->
     </section><!-- section recent-questions -->

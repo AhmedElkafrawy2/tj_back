@@ -125,7 +125,8 @@ class ExperimentController extends Controller
             ,"categories.name AS category"
             ,"countries.name AS country"
             ,"cities.name AS city")
-            ->get();
+            ->paginate(6);
+
         $data = [
             'countries'    => $countries,
             'experiments'  => $experiments
@@ -140,12 +141,11 @@ class ExperimentController extends Controller
                     ->join("categories" , "experiments.category_id" , "categories.id")
                     ->join("status" , "status.id" , "experiments.status_id")
                     ->join("countries" , "countries.id" , "experiments.country_id")
-                    ->join("experiment_image" , "experiment_image.experiment_id" , "experiments.id")
-                    ->join("images" , "images.id" , "experiment_image.image_id")
                     ->join("cities" , "cities.id" , "experiments.city_id")
                     ->orderBy("experiments.created_at" , "desc")
+                    ->join("users" , "users.id" , "experiments.user_id")
                     ->where("experiments.id" , $id)
-                    ->select("experiments.id"
+                    ->select("experiments.id AS id"
                         ,"experiments.title"
                         ,"experiments.description"
                         ,"experiments.cost"
@@ -153,10 +153,18 @@ class ExperimentController extends Controller
                         ,"categories.name AS category"
                         ,"countries.name AS country"
                         ,"cities.name AS city"
-                        ,"images.name AS image_url"
+                        ,"users.id AS user_id"
                         ,DB::raw("DATE(experiments.created_at) AS created_at"))
                         ->first();
-        return response()->json([$experiment]);
+        $exp_images = DB::table("experiment_image")
+                        ->join("experiments" , "experiments.id" , "experiment_image.experiment_id")
+                        ->where("experiment_image.experiment_id" , $experiment->id)
+                        ->join("images" , "images.id" , "experiment_image.image_id")
+                        ->select(
+                            DB::raw("CONCAT('". url('/') ."','/storage/app/public/experiment/', images.name) AS image_url")
+                         )
+                        ->get();
+        
         $exp_create_time = $this->get_time_params($experiment->created_at);
         $experiment->created_at = $exp_create_time;
         
@@ -193,7 +201,8 @@ class ExperimentController extends Controller
             "experiment" => $experiment,
             "countries"  => $countries,
             "replies"    => $replies,
-            "comments"   => $comments
+            "comments"   => $comments,
+            "images"     => $exp_images
         ];
         return view('site.experiment.experiment',$data);
     }
@@ -263,4 +272,5 @@ class ExperimentController extends Controller
         
         return $arabic_date;
     }
+    
 }

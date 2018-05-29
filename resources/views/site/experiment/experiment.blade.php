@@ -77,10 +77,10 @@
     			</div>
     			@endif
                 <div class="row">
-    
+    				
                     <div class="col-12 col-md-9 d-md-flex align-content-between flex-wrap">
                         <div class="img-wrap">
-                            <img src="http://placehold.it/870x598"
+                            <img src="{{ $images[0]->image_url }}"
                                  width="870"
                                  height="598"
                                  class="img-fluid d-block"
@@ -88,31 +88,19 @@
                         </div>
                     </div><!-- col -->
                     <div class="col-12 col-md-3 d-md-flex align-content-between flex-wrap">
-    
-                        <div class="img-wrap">
-                            <img src="http://placehold.it/270x186"
-                                 width="270"
-                                 height="186"
-                                 class="img-fluid d-block mx-auto mt-md-0 mt-4"
-                                 alt="Experience image">
-                        </div>
-    
-                        <div class="img-wrap">
-                            <img src="http://placehold.it/270x186"
-                                 width="270"
-                                 height="186"
-                                 class="img-fluid d-block mx-auto mt-md-0 mt-4"
-                                 alt="Experience image">
-                        </div>
-    
-                        <div class="img-wrap">
-                            <img src="http://placehold.it/270x186"
-                                 width="270"
-                                 height="186"
-                                 class="img-fluid d-block mx-auto mt-md-0 mt-4"
-                                 alt="Experience image">
-                        </div>
-    
+    					@if( count($images) > 1)
+        					@foreach($images as $image)
+        						@if($image->image_url != $images[0]->image_url)
+                                    <div class="img-wrap">
+                                        <img src="{{ $image->image_url }}"
+                                             width="270"
+                                             height="186"
+                                             class="img-fluid d-block mx-auto mt-md-0 mt-4"
+                                             alt="Experience image">
+                                    </div>
+                                @endif
+                            @endforeach
+    					@endif
                     </div><!-- col -->
     
                 </div><!-- row -->
@@ -167,7 +155,7 @@
                             @endif
                         @endforeach
                     </div><!-- content-aria -->
-    
+    				@if($experiment->user_id == auth()->id())
                     <div class="update-aria mt-5">
                         <h5 class="font-cairo-bold line-height-lg">تحديث التجربة</h5>
                         <form action="{{ url('/experiment/add/reply') }}" method="POST" enctype="multipart/form-data">
@@ -195,7 +183,7 @@
                             @endif
                         </form>
                     </div><!-- update-aria -->
-    
+    				@endif
                 </div><!-- entry-content -->
     
                 <div class="comments py-5 border-bottom border-lighten">
@@ -252,27 +240,33 @@
                     </div><!-- media -->
     				@endforeach
                 </div><!-- comments -->
-    
-                <div class="reply py-5">
-                    <h5 class="font-cairo-bold mb-5">إترك تعليق</h5>
-    
-                    <form action="{{ url('/comment/add') }}" method="POST">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="your-message" class="sr-only">الرسالة</label>
-                            <input type = "hidden" name="id" value="{{ $experiment->id }}" />
-                            <textarea name = "comment" class="form-control border-lighten rounded-0" id="your-message" rows="5" placeholder="الرسالة"></textarea>
-                            @if ($errors->has('comment'))
-                                <div class="add-reply-error-content alert alert-danger">
-                                    <strong>{{ $errors->first('comment') }}</strong>
-                                </div>
-                            @endif
-                        </div>
-                        <button type="submit" class="btn btn-secondary text-white radius px-5 line-height-lg">إرسال</button>
-                    </form>
-    
-                </div><!-- reply -->
-    
+    			@if(auth()->user())
+                    <div class="reply py-5">
+                        <h5 class="font-cairo-bold mb-5">إترك تعليق</h5>
+        
+                        <form action="{{ url('/comment/add') }}" method="POST">
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <label for="your-message" class="sr-only">الرسالة</label>
+                                <input type = "hidden" name="id" value="{{ $experiment->id }}" />
+                                <input type = "hidden" name="type" value="experiment" />
+                                <textarea name = "comment" class="form-control border-lighten rounded-0" id="your-message" rows="5" placeholder="الرسالة"></textarea>
+                                @if ($errors->has('comment'))
+                                    <div class="add-reply-error-content alert alert-danger">
+                                        <strong>{{ $errors->first('comment') }}</strong>
+                                    </div>
+                                @endif
+                            </div>
+                            <button type="submit" class="btn btn-secondary text-white radius px-5 line-height-lg">إرسال</button>
+                        </form>
+        
+                    </div><!-- reply -->
+                @else
+                	<div class="alert alert-info">
+                		قم بالتسجيل لكى تتمكن من اضافة تعليق
+                	</div>
+    			@endif
+    			
             </div><!-- container -->
     
         </div><!-- page-content -->

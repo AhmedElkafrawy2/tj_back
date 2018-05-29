@@ -46,15 +46,20 @@ class CommentController extends Controller
         
         $comment = $request->input('comment');
         $id      = $request->input('id');
-        
+        $type    = $request->input('type');
         DB::table("comments")
                  ->insert([
                     "comment" => $comment,
                     "user_id" => Auth::id(),
                     "post_id" => $id,
-                    "type"    => "experiment"
+                    "type"    => $type
                  ]);
-        $request->session()->flash('success', 'تم اضافة التعليق بنجاح');
+        if($type == "experiment"){
+            $request->session()->flash('success', 'تم اضافة التعليق بنجاح');
+        }else{
+            $request->session()->flash('success', 'تم اضافة الرد بنجاح');
+        }
+        
         return redirect()->back()->withInput();
     }
     

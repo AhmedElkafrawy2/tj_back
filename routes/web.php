@@ -30,17 +30,26 @@ Route::prefix('experiment')->group(function () {
     });
 });
 
+Route::prefix('question')->group(function () {
+    Route::get("/all" ,  "Site\QuestionController@get_all_questions");
+    Route::get("/{id}" , "Site\QuestionController@get_certain_question");
+    Route::prefix('add')->group(function () {
+        Route::get("/" ,  "Site\Site\UserController@getQuestion");
+        Route::post("/" , "Site\Site\UserController@postQuestion");
+    });
+});
+
 Route::prefix('comment')->group(function () {
     Route::post("/add" ,  "Site\CommentController@add_comment");
     Route::post("/reply" ,  "Site\CommentController@add_reply");
 });
-Route::middleware(['auth'])->group(function () {
-    Route::get("/add/experiment" , "Site\UserController@getExperiment");
-    Route::post("/add/experiment" , "Site\UserController@postExperiment");
+// Route::middleware(['auth'])->group(function () {
+//     Route::get("/add/experiment" , "Site\UserController@getExperiment");
+//     Route::post("/add/experiment" , "Site\UserController@postExperiment");
     
-    Route::get("/add/question" , "Site\UserController@getQuestion");
-    Route::post("/add/question" , "Site\UserController@postQuestion"); 
+//     Route::get("/add/question" , "Site\UserController@getQuestion");
+//     Route::post("/add/question" , "Site\UserController@postQuestion"); 
     
-});
+// });
 
 
