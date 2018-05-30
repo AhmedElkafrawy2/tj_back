@@ -16,8 +16,14 @@ use DB;
 use Illuminate\Support\Facades\Storage;
 class QuestionController extends Controller
 {
+    public $sociallinks;
+    public $pages;
+    public $categories;
     public function __construct(){
 //         $this->middleware('auth');
+        $this->sociallinks = DB::table("settings")->select("*")->get();
+        $this->pages       = DB::table("pages")->select("*")->get();
+        $this->categories  = DB::table('categories')->select("*")->get();
     }
     public function get_all_questions(){
         $countries   = Country::all();
@@ -32,7 +38,10 @@ class QuestionController extends Controller
 
         $data = [
             'countries'    => $countries,
-            'questions'    => $questions
+            'questions'    => $questions,
+            'sociallinks'  => $this->sociallinks,
+            'pages'        => $this->pages,
+            "categories"   => $this->categories
         ];
         return view('site.question.all',$data);
     }
@@ -78,9 +87,70 @@ class QuestionController extends Controller
         $data = [
             "question"   => $question,
             "countries"  => $countries,
-            "comments"   => $comments
+            "comments"   => $comments,
+            'sociallinks'  => $this->sociallinks,
+            'pages'        => $this->pages,
+            "categories"   => $this->categories
         ];
         return view('site.question.question',$data);
+    }
+    
+    public function getQuestion(){
+        $countries  = Country::all();
+        $categories = Category::all();
+        $data = [
+            'countries'    => $countries,
+            'categories'   => $categories,
+            'sociallinks'  => $this->sociallinks,
+            'pages'        => $this->pages,
+            "categories"   => $this->categories
+        ];
+        return view("site.question.add" , $data);
+    }
+    public function postQuestion(Request $r){
+        $messages = array(
+            "name.required"     => "من فضلك قم بادخال عنوان التجربة",
+            "desc.required"     => "من فضلك قم بادخال وصف التجربة",
+            "success"           => "تمت العملية بنجاح",
+            "cat.required"      => "من فضلك قم باختيار التصنيف الخاص بالتجربة",
+            "cat.numeric"       => "التصنيف غير صحيح",
+            "cat.exists"        => "التصنيف غير موجود",
+        );
+        $validator = Validator::make($r->all(), [
+            'name'    => 'required',
+            'desc'    => "required",
+            'cat'     => 'required|numeric|exists:categories,id',
+        ] , $messages);
+        
+        if ($validator->fails()){
+            $error = $validator->errors();
+            return response()->json(['status' => false ,'errors' => $error]);
+        }
+        $name    = $r->input("name");
+        $desc    = $r->input("desc");
+        $cat     = $r->input("cat");
+        $question_id = Question::insertGetId([
+            "title"        => $name,
+            "description" => $desc,
+            "category_id" => $cat,
+        ]);
+        if($r->hasFile("image")){
+            
+            $r->image->store('question', 'public');
+            $image_id = DB::table('images')->insertGetId([
+                "name" => $r->image->hashName(),
+            ]);
+            DB::table("question_image")->insert([
+                "question_id"  => $question_id,
+                "image_id"     => $image_id
+            ]);
+        }
+        $successResponse = [
+            'status' => true,
+            'msg'    => $messages['success'],
+            'time'   => 3000
+        ];
+        return response()->json($successResponse);
     }
     
     public function add_question_answer(Request $request){

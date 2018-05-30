@@ -10,21 +10,13 @@
                 <div class="col-12 col-md-6 d-flex justify-content-md-start justify-content-center">
                     <div class="top-right">
                         <ul class="nav social pr-0">
+                        	@foreach($sociallinks as $social)
                             <li class="nav-item">
-                                <a href="https://facebook.com" class="nav-link text-white px-1">
-                                    <i class="fa fa-facebook fa-fw"></i>
+                                <a href = "{{ $social->value }}" target="_blank" class="nav-link text-white px-1">
+                                    <i class="fa fa-{{$social->name}} fa-fw"></i>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="https://twitter.com" class="nav-link text-white px-1">
-                                    <i class="fa fa-twitter fa-fw"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://google.com" class="nav-link text-white px-1">
-                                    <i class="fa fa-google-plus fa-fw"></i>
-                                </a>
-                            </li>
+                            @endforeach
                         </ul>
                     </div><!-- top-right -->
                 </div>
@@ -95,7 +87,7 @@
 
     <nav id="primary-navigation" class="primary-navigation navbar navbar-expand-md font-weight-bold py-3">
         <div class="container">
-            <a href="index.html" class="navbar-brand text-dark mr-0 pt-0">
+            <a href="{{ url('/') }}" class="navbar-brand text-dark mr-0 pt-0">
                 <h1 class="site-title mt-0 font-baloo">تجربتي</h1>
             </a>
 
@@ -111,26 +103,50 @@
 
             <div id="navbar-collapse" class="collapse navbar-collapse">
                 <div class="navbar-nav mr-sm-auto position-relative">
-                    <a href="index.html" class="nav-item nav-link text-pink active">الرئيسية</a>
-                    <a href="page.html" class="nav-item nav-link">من نحن</a>
+                    <a href="{{ url('/') }}" class="nav-item nav-link text-pink active">الرئيسية</a>
+                    @if(count($pages) > 3)
+                    	@foreach($pages as $key => $page)
+                    		@if($key < 2)
+                    			<a href="{{ url('/pages/' . $page->title) }}" class="nav-item nav-link">{{ $page->title }}</a>
+                    		@endif
+                    	@endforeach
+                    	
+                        <div class="dropdown">
+                            <a href=""
+                               id="experience"
+                               class="nav-item nav-link  dropdown-toggle"
+                               aria-haspopup="true"
+                               aria-expanded="false"
+                               data-toggle="dropdown">الصفحات الفرعية</a>
+                            <div class="dropdown-menu text-right" aria-labelledby="experience">
+                                @foreach($pages as $key => $page)
+                        			@if($key >= 2)
+                                    	<a href="{{ url('/pages/' . $page->title) }}" class="dropdown-item bg-pink">{{ $page->title }}</a>
+                               		@endif
+                           		@endforeach
+                            </div>
+                        </div>
+                    @else
+                    	@foreach($pages as $page)
+                    		<a href="{{ url('/pages/' . $page->title) }}" class="nav-item nav-link">{{ $page->title }}</a>
+                    	@endforeach
+                    @endif
 
+					
                     <div class="dropdown">
                         <a href="experience.html"
                            id="experience"
                            class="nav-item nav-link  dropdown-toggle"
                            aria-haspopup="true"
                            aria-expanded="false"
-                           data-toggle="dropdown">أحدث التجارب</a>
+                           data-toggle="dropdown">الاقسام</a>
                         <div class="dropdown-menu text-right" aria-labelledby="experience">
-                            <a href="experience.html" class="dropdown-item active bg-pink">عنصر أول</a>
-                            <a href="experience.html" class="dropdown-item">عنصر ثاني</a>
-                            <a href="experience.html" class="dropdown-item">عنصر ثالث</a>
+                        	@foreach($categories as $cat)
+                            	<a href="{{ url('/categories/' . $cat->name) }}" class="dropdown-item bg-pink">{{ $cat->name }}</a>
+                        	@endforeach
                         </div>
                     </div>
-
-                    <a href="question.html" class="nav-item nav-link ">الأسئلة</a>
-                    <a href="category.html" class="nav-item nav-link ">الأقسام</a>
-                    <a href="contact.html" class="nav-item nav-link ">اتصل بنا</a>
+                    <a href="{{ url('/contact-us') }}" class="nav-item nav-link ">اتصل بنا</a>
                     <a href="#" id="search-trigger" class="nav-item nav-link  search-trigger">
                         <i class="fa fa-search fa-fw"></i>
                     </a>

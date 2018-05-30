@@ -1,12 +1,14 @@
 @extends('site.layouts.master')
 @section('title')
-- الرئيسية
+- {{ $cat->name }}
 @endsection
 @section('content')
 <main class="site-content pb-5">
 
 
-	@include('site.layouts.slider')
+	<h1 class="page-title h4 font-cairo-bold text-center">
+        {{ $cat->name }}
+    </h1><!-- page-title -->
     <section class="section recent-experience py-5 mt-5">
         <header class="section-header">
             <h4 class="section-title font-cairo-bold text-center">
@@ -55,7 +57,7 @@
 				@endforeach
             </div><!-- row -->
             <div class="text-center mt-5">
-                <a href="{{ url('/experiment/all') }}" class="more-link btn btn-outline-pink radius line-height-lg px-5 font-cairo-bold align-self-end">شاهد المزيد</a>
+                <a href="{{ url('/categories/experiment/') ."/" . $cat->name }}" class="more-link btn btn-outline-pink radius line-height-lg px-5 font-cairo-bold align-self-end">شاهد المزيد</a>
             </div>
         </div><!-- container -->
     </section><!-- section recent-experience -->
@@ -95,7 +97,7 @@
             </div><!-- accordion -->
 
             <div class="text-center mt-5">
-                <a href="{{ url('/question/all') }}" class="more-link btn btn-outline-pink radius line-height-lg px-5 font-cairo-bold align-self-end">شاهد المزيد</a>
+                <a href="{{ url('/categories/questions/' . $cat->name) }}" class="more-link btn btn-outline-pink radius line-height-lg px-5 font-cairo-bold align-self-end">شاهد المزيد</a>
             </div>
         </div><!-- container -->
     </section><!-- section recent-questions -->

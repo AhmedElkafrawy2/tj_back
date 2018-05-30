@@ -15,147 +15,177 @@ use DB;
 use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
-    public function getExperiment(){
+    public $sociallinks;
+    public $pages;
+    public $categories;
+    public function __construct(){
+
+        $this->sociallinks = DB::table("settings")->select("*")->get();
+        $this->pages       = DB::table("pages")->select("*")->get();
+        $this->categories  = DB::table('categories')->select("*")->get();
+    }
+
+    public function get_category($name){
+        $countries = Country::all();
+        $cat       = DB::table("categories")
+                        ->where("name" , $name)
+                        ->select("*")
+                        ->first();
+        
+        if(!$cat){
+            return redirect()->url("/");
+        }
+        
+        $experiments = DB::table("experiments")
+        ->join("categories" , "experiments.category_id" , "categories.id")
+        ->join("status" , "status.id" , "experiments.status_id")
+        ->join("countries" , "countries.id" , "experiments.country_id")
+        ->join("cities" , "cities.id" , "experiments.city_id")
+        ->where("categories.id" , $cat->id)
+        ->orderBy("experiments.created_at" , "desc")
+        ->take(6)
+        ->select("experiments.id"
+            , "experiments.title"
+            , "experiments.description"
+            ,"experiments.cost"
+            ,"status.name AS status"
+            ,"categories.name AS category"
+            ,"countries.name AS country"
+            ,"cities.name AS city")
+            ->get();
+        
+        $questions = DB::table("questions")
+                    ->join("categories" , "categories.id" , "questions.category_id")
+                    ->where("categories.id" , $cat->id)
+                    ->orderBy("questions.created_at" , "desc")
+                    ->take(6)
+                    ->get();
+        
+        $data = [
+            "countries"   => $countries,
+            "cat"         => $cat,
+            "experiments" => $experiments,
+            "questions"   => $questions,
+            "sociallinks" => $this->sociallinks,
+            "pages"       => $this->pages,
+            "categories"  => $this->categories
+        ];
+        return view("site.categories.category" , $data);
+    }
+    
+    public function get_page($title){
         
         $countries = Country::all();
-        $status    = Status::all();
-        $categories= Category::all();
-        $data = [
-            'countries' => $countries,
-            'status'    => $status,
-            'categories'=> $categories
-        ];
-        return view('site.experiment.add',$data);
-    }
-    public function postExperiment(Request $r){
-        $messages = array(
-            "name.required"     => "من فضلك قم بادخال عنوان التجربة",
-            "desc.required"     => "من فضلك قم بادخال وصف التجربة",
-            "cat.required"      => "من فضلك قم باختيار التصنيف الخاص بالتجربة",
-            "cat.numeric"       => "التصنيف غير صحيح",
-            "cat.exists"        => "التصنيف غير موجود",
-            "status.required"   => "من فضلك قم باختيار حالة التجربة",
-            "status.numeric"    => "حالة التجربة غير صحيحة",
-            "status.exists"     => "حالة التجربة غير موجودة",
-            "date.required"     => "من فضلك قم بادخال تاريخ التجربة",
-            "cost.required"     => "تكلفة التجربة مطلوبة",
-            "cost.numeric"      =>"التكلفة غير صحيحة",
-            "country.required"  => "من فضلك قم باختيار الدولة",
-            "country.numeric"   => "الدولة غير صحيحة",
-            "country.exists"    => "الدولة غير موجودة",
-            "city.required"     => "من فضلك قم باختيار المدينة",
-            "city.numeric"      => "المدينة غير صحيحة",
-            "city.exists"       => "المدينة غير موجودة",
-            "number.required"   => "من فضلك قم بادخال صور التجربة",
-            "success"           => "تمت العملية بنجاح"
-            
-        );
-        $validator = Validator::make($r->all(), [
-            'name'    => 'required',
-            'desc'    => "required",
-            'cat'     => 'required|numeric|exists:categories,id',
-            'status'  => 'required|numeric|exists:status,id',
-            'date'    => 'required',
-            'cost'    => 'required|numeric',
-            'country' => "required|numeric|exists:countries,id",
-            'city'    => "required|numeric|exists:cities,id",
-            'number'  => "required"
-            
-        ] , $messages);
-        
-        if ($validator->fails()){
-            $error = $validator->errors();
-            return response()->json(['status' => false ,'errors' => $error]);
-        }
-        $name    = $r->input("name");
-        $desc    = $r->input("desc");
-        $cat     = $r->input("cat");
-        $status  = $r->input("status");
-        $date    = $r->input("date");
-        $cost    = $r->input("cost");
-        $country = $r->input("country");
-        $city    = $r->input("city");
-        $number  = $r->input("number");
-        $exp_id = Experiment::insertGetId([
-            "title"       => $name,
-            "description" => $desc,
-            "status_id"   => $status,
-            "cost"        => $cost,
-            "country_id"  => $country,
-            "city_id"     => $city,
-            "category_id" => $cat,            
-        ]);
-        if($r->hasFile("0")){
-            for($i = 0; $i <= $number ; $i++){
-                $r->$i->store('experiment', 'public');
-                $image_id = DB::table('images')->insertGetId([
-                    "name" => $r->$i->hashName(),
-                ]);
-                DB::table("experiment_image")->insert([
-                   "experiment_id" => $exp_id,
-                    "image_id"     => $image_id
-                ]);
-           }
-        }
-        $successResponse = [
-                    'status' => true,
-                    'msg'    => $messages['success'],
-                    'time'   => 3000
-        ];
-        return response()->json($successResponse);
-    }
-    public function getQuestion(){
-        $countries  = Country::all();
-        $categories = Category::all();
-        $data = [
-            'countries'  => $countries,
-            'categories' => $categories
-        ];
-        return view("site.question.add" , $data);
-    }
-    public function postQuestion(Request $r){
-        $messages = array(
-            "name.required"     => "من فضلك قم بادخال عنوان التجربة",
-            "desc.required"     => "من فضلك قم بادخال وصف التجربة",
-            "success"           => "تمت العملية بنجاح",
-            "cat.required"      => "من فضلك قم باختيار التصنيف الخاص بالتجربة",
-            "cat.numeric"       => "التصنيف غير صحيح",
-            "cat.exists"        => "التصنيف غير موجود",
-        );
-        $validator = Validator::make($r->all(), [
-            'name'    => 'required',
-            'desc'    => "required",
-            'cat'     => 'required|numeric|exists:categories,id',
-        ] , $messages);
-        
-        if ($validator->fails()){
-            $error = $validator->errors();
-            return response()->json(['status' => false ,'errors' => $error]);
-        }
-        $name    = $r->input("name");
-        $desc    = $r->input("desc");
-        $cat     = $r->input("cat");
-        $question_id = Question::insertGetId([
-                    "title"        => $name,
-                    "description" => $desc,
-                    "category_id" => $cat,  
-        ]);
-        if($r->hasFile("image")){
+        $page = DB::table("pages")
+                    ->where("pages.title" , $title)
+                    ->select("*")
+                    ->first();
 
-            $r->image->store('question', 'public');
-            $image_id = DB::table('images')->insertGetId([
-                "name" => $r->image->hashName(),
-            ]);
-            DB::table("question_image")->insert([
-                "question_id"  => $question_id,
-                "image_id"     => $image_id
-            ]);
+        if(!$page){
+            return redirect()->url("/");
         }
-        $successResponse = [
-            'status' => true,
-            'msg'    => $messages['success'],
-            'time'   => 3000
+        $data = [
+            "countries"   => $countries,
+            "page"        => $page,
+            "sociallinks" => $this->sociallinks,
+            "pages"       => $this->pages,       
+            "categories"  => $this->categories
         ];
-        return response()->json($successResponse);
+        return view("site.pages.page" , $data);
+    }
+    
+    public function get_contact_us(){
+        $countries = Country::all();
+        $data = [
+            "countries"   => $countries,
+            "sociallinks" => $this->sociallinks,
+            "pages"       => $this->pages,
+            "categories"  => $this->categories
+        ];
+        return view('site.pages.contact',$data);
+    }
+    
+    public function get_all_categories_exp($name){
+        $countries = Country::all();
+        $cat       = DB::table("categories")
+        ->where("name" , $name)
+        ->select("*")
+        ->first();
+        
+        if(!$cat){
+            return redirect()->url("/");
+        }
+        
+        $experiments = DB::table("experiments")
+        ->join("categories" , "experiments.category_id" , "categories.id")
+        ->join("status" , "status.id" , "experiments.status_id")
+        ->join("countries" , "countries.id" , "experiments.country_id")
+        ->join("cities" , "cities.id" , "experiments.city_id")
+        ->where("experiments.category_id" , $cat->id)
+        ->orderBy("experiments.created_at" , "desc")
+        ->select("experiments.id"
+            , "experiments.title"
+            , "experiments.description"
+            ,"experiments.cost"
+            ,"status.name AS status"
+            ,"categories.name AS category"
+            ,"countries.name AS country"
+            ,"cities.name AS city")
+            ->paginate(6);
+            
+            $data = [
+                'countries'    => $countries,
+                'experiments'  => $experiments,
+                'cat'          => $cat,
+                "sociallinks"  => $this->sociallinks,
+                "pages"        => $this->pages,
+                "categories"   => $this->categories
+            ];
+            return view('site.categories.experiment',$data);
+        
+    }
+    
+    public function get_all_categories_questions($name){
+        $countries = Country::all();
+        $cat       = DB::table("categories")
+        ->where("name" , $name)
+        ->select("*")
+        ->first();
+        
+        if(!$cat){
+            return redirect()->url("/");
+        }
+        
+        $questions = DB::table("questions")
+        ->join("categories" , "questions.category_id" , "categories.id")
+        ->where("categories.id" , $cat->id)
+        ->orderBy("questions.created_at" , "desc")
+        ->select("questions.id"
+            , "questions.title"
+            , "questions.description"
+            ,"categories.name AS category")
+            ->paginate(6);
+            
+        $data = [
+                'countries'    => $countries,
+                'questions'    => $questions,
+                'cat'          => $cat,
+                'sociallinks'  => $this->sociallinks,
+                'pages'        => $this->pages,
+                "categories"   => $this->categories
+               ];
+        return view('site.categories.questions',$data);
+    }
+    public function post_contact_us(Request $request){
+        
     }
 }
+
+
+
+
+
+
+
+
+

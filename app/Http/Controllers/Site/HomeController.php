@@ -12,6 +12,14 @@ use App\Question;
 use DB;
 class HomeController extends Controller
 {
+    public $sociallinks;
+    public $pages;
+    public $categories;
+    public function __construct(){
+        $this->sociallinks = DB::table("settings")->select("*")->get();
+        $this->pages       = DB::table("pages")->select("*")->get();
+        $this->categories  = DB::table('categories')->select("*")->get();
+    }
     public function index(){
         $countries   = Country::all();
         $experiments = DB::table("experiments")
@@ -34,10 +42,21 @@ class HomeController extends Controller
                             ->orderBy("created_at" , "desc")
                             ->take(6)
                             ->get();
+        
+        $slider = DB::table('slider')
+                    ->select("main_title" 
+                             , "sub_title" 
+                             , "link"
+                             ,DB::raw("CONCAT('". url('/') ."','/storage/app/public/slider/', image) AS image_url"))
+                    ->get();
         $data = [
              "countries"   => $countries,
              "experiments" => $experiments,
-             "questions"   => $questions
+             "questions"   => $questions,
+             "slider"      => $slider,
+             "sociallinks" => $this->sociallinks,
+             "pages"       => $this->pages,
+             "categories"   => $this->categories
         ];
         return view('site.index' , $data);
     }

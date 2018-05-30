@@ -6,49 +6,26 @@
                     <a href="index.html" class="font-baloo text-white nav-link p-0">تجربتي</a>
                 </h1>
                 <ul class="nav social pr-0 mt-5 justify-content-center justify-content-md-start">
+                	@foreach($sociallinks as $social)
                     <li class="nav-item ml-3">
-                        <a href="https://facebook.com" class="nav-link text-white bg-pink rounded-circle p-0 text-center">
-                            <i class="fa fa-facebook" aria-label="Facebook icon"></i>
+                        <a href="{{ $social->value }}" class="nav-link text-white bg-pink rounded-circle p-0 text-center">
+                            <i class="fa fa-{{ $social->name }}" aria-label="Facebook icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item ml-3">
-                        <a href="https://twitter.com" class="nav-link text-white bg-pink rounded-circle p-0 text-center">
-                            <i class="fa fa-twitter" aria-label="Twitter icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item ml-3">
-                        <a href="https://google.com" class="nav-link text-white bg-pink rounded-circle p-0 text-center">
-                            <i class="fa fa-google-plus p-0" aria-label="Google plus icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://instagram.com" class="nav-link text-white bg-pink rounded-circle p-0 text-center">
-                            <i class="fa fa-instagram" aria-label="Instagram icon"></i>
-                        </a>
-                    </li>
+                    @endforeach
                 </ul>
             </div><!-- widget -->
             <div class="widget col-12 col-md-4 mt-md-0 mt-5"><!-- widget -->
                 <h6 class="widget-title text-white">روابط سريعة</h6><!-- widget-title -->
                 <ul class="hot-links list-unstyled mt-3 pr-0">
+                    @foreach($pages as $page)
                     <li>
-                        <a href="submit.html" class="text-light nav-link pr-0">
+                        <a href="{{ url('/pages/' . $page->title) }}" class="text-light nav-link pr-0">
                             <i class="fa fa-chevron-left text-pink ml-2"></i>
-                            من نحن
+                            {{ $page->title }}
                         </a>
                     </li>
-                    <li>
-                        <a href="experience.html" class="text-light nav-link pr-0">
-                            <i class="fa fa-chevron-left text-pink ml-2"></i>
-                            أحدث التجارب
-                        </a>
-                    </li>
-                    <li>
-                        <a href="question.html" class="text-light nav-link pr-0">
-                            <i class="fa fa-chevron-left text-pink ml-2"></i>
-                            الأسئلة
-                        </a>
-                    </li>
+					@endforeach
                     <li>
                         <a href="category.html" class="text-light nav-link pr-0">
                             <i class="fa fa-chevron-left text-pink ml-2"></i>
@@ -56,7 +33,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="contact.html" class="text-light nav-link pr-0">
+                        <a href="{{ url('/contact-us') }}" class="text-light nav-link pr-0">
                             <i class="fa fa-chevron-left text-pink ml-2"></i>
                             اتصل بنا
                         </a>
